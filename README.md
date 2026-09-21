@@ -1,16 +1,18 @@
-## Hi there 👋
-
-<!--
-**amintorabi88/amintorabi88** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+<table>
+<tr>
+<td width="300" align="center">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="portrait-dark.svg">
+<source media="(prefers-color-scheme: light)" srcset="portrait-light.svg">
+<img src="portrait-light.svg" alt="ASCII portrait of Amin Torabi" width="280">
+</picture>
+</td>
+<td valign="middle">
+<h2>Amin Torabi</h2>
+<p><strong>Data Scientist · FMC</strong></p>
+<p>Philadelphia, PA</p>
+<h3>My work</h3>
+<p><a href="https://github.com/amintorabi88?tab=repositories">Explore my projects →</a></p>
+</td>
+</tr>
+</table>
