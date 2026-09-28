@@ -13,13 +13,12 @@ import json
 import os
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
 
 
 USER = "amintorabi88"
 
-# GitHub account creation year.
-# Your account is newer than the example you copied.
-# Change this if needed after checking your GitHub join date.
+# GitHub account creation year, verified against the public profile API.
 JOINED_YEAR = 2022
 
 # Width of the information column, measured in monospace characters.
@@ -117,7 +116,7 @@ def gh(url, payload=None, token=None):
         headers=headers,
     )
 
-    with urllib.request.urlopen(request) as response:
+    with urllib.request.urlopen(request, timeout=45) as response:
         body = response.read()
 
         if not body:
@@ -149,6 +148,27 @@ def graphql(query, variables=None, token=None):
 # ---------------------------------------------------------------------------
 
 
+def fetch_public_stats():
+    """Render public REST counts without inventing token-only statistics."""
+    _, user = gh(f"https://api.github.com/users/{USER}")
+    repos = []
+    page = 1
+    while True:
+        _, batch = gh(
+            f"https://api.github.com/users/{USER}/repos?per_page=100&page={page}"
+        )
+        repos.extend(batch)
+        if len(batch) < 100:
+            break
+        page += 1
+    return {
+        "repos": user["public_repos"], "followers": user["followers"],
+        "stars": sum(repo["stargazers_count"] for repo in repos),
+        "contributed": None, "commits": None,
+        "loc": None, "loc_add": None, "loc_del": None,
+    }
+
+
 def fetch_stats():
     """Fetch GitHub statistics for the profile."""
 
@@ -158,7 +178,7 @@ def fetch_stats():
         (
             f'y{year}: contributionsCollection('
             f'from: "{year}-01-01T00:00:00Z", '
-            f'to: "{year + 1}-01-01T00:00:00Z") '
+            f'to: "{year}-12-31T23:59:59Z") '
             "{ "
             "totalCommitContributions "
             "restrictedContributionsCount "
@@ -179,7 +199,6 @@ def fetch_stats():
 
     commits = sum(
         value["totalCommitContributions"]
-        + value["restrictedContributionsCount"]
         for value in contribution_data.values()
     )
 
@@ -453,7 +472,7 @@ def rule(title=""):
 def info_lines(stats):
     """Create the information shown on the right side."""
 
-    n = lambda value: f"{value:,}"
+    n = lambda value: "N/A" if value is None else f"{value:,}"
 
     return [
         [
@@ -551,8 +570,8 @@ def info_lines(stats):
 
         kv2(
             "Repos",
-            f"{stats['repos']} "
-            f"{{Contributed: {stats['contributed']}}}",
+            f"{n(stats['repos'])} "
+            f"{{Contributed: {n(stats['contributed'])}}}",
             "Stars",
             n(stats["stars"]),
         ),
@@ -566,7 +585,7 @@ def info_lines(stats):
 
         [
             (
-                "Lines of Code: ",
+                "Net lines changed: ",
                 "k",
             ),
             (
@@ -717,17 +736,12 @@ def main():
 
     selfcheck()
 
-    if not TOKEN:
-        raise RuntimeError(
-            "No GitHub token found. "
-            "Set GITHUB_TOKEN or ACCESS_TOKEN."
-        )
 
     print(
         f"Fetching GitHub statistics for {USER}..."
     )
 
-    stats = fetch_stats()
+    stats = fetch_stats() if TOKEN else fetch_public_stats()
 
     print(
         "Stats:",
@@ -738,7 +752,7 @@ def main():
     )
 
     for mode in PALETTES:
-        filename = f"{mode}_mode.svg"
+        filename = Path(__file__).resolve().parents[1] / f"{mode}_mode.svg"
 
         svg = render(
             mode,
@@ -758,109 +772,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()    ("Issues", "totalIssueContributions"),
-)
-
-
-def count(value):
-    if type(value) is not int or value < 0:
-        raise ValueError("GitHub returned a missing or invalid contribution count.")
-    return value
-
-
-def fetch_stats(token, username, now):
-    variables = {
-        "from": (now - timedelta(days=365)).isoformat().replace("+00:00", "Z"),
-        "to": now.isoformat().replace("+00:00", "Z"),
-    }
-    request = urllib.request.Request(
-        "https://api.github.com/graphql",
-        data=json.dumps({"query": QUERY, "variables": variables}).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "aggregate-profile-stats",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=45) as response:
-            payload = json.load(response)
-    except urllib.error.HTTPError as error:
-        # Do not log response bodies, request headers, or tokens.
-        raise RuntimeError(
-            f"GitHub returned HTTP {error.code}. Check the token, its expiration, "
-            "and any organization restrictions. The README was not changed."
-        ) from None
-    except urllib.error.URLError:
-        raise RuntimeError("Could not reach GitHub. The README was not changed.") from None
-    if payload.get("errors"):
-        raise RuntimeError(
-            "GitHub could not complete the contribution query. Check token permissions "
-            "and organization access. The README was not changed."
-        )
-    viewer = payload["data"]["viewer"]
-    if viewer["login"].lower() != username.lower():
-        raise RuntimeError("The stats token must belong to the profile owner.")
-    return viewer["contributionsCollection"]
-
-
-def stats_html(stats, now):
-    restricted = count(stats["restrictedContributionsCount"])
-    lines = ["<p><strong>Past 365 days</strong></p>"]
-    for index, (label, field) in enumerate(FIELDS):
-        prefix = "<p>" if index == 0 else ""
-        suffix = "</p>" if index == len(FIELDS) - 1 else "<br>"
-        lines.append(f"{prefix}{label}: <strong>{count(stats[field]):,}</strong>{suffix}")
-    if restricted:
-        lines.append(
-            "<p><sub>Some private activity may be missing from these totals.</sub></p>"
-        )
-    # Do not add restricted contributions to commits or other categories.
-    lines.append(f"<p><sub>GitHub contribution counts · Updated {now:%Y-%m-%d} UTC</sub></p>")
-    return "\n".join(lines)
-
-
-def replace_stats(readme, block):
-    if readme.count(START) != 1 or readme.count(END) != 1:
-        raise ValueError("README must contain exactly one pair of STATS markers.")
-    before, remainder = readme.split(START, 1)
-    if END not in remainder:
-        raise ValueError("README STATS markers are in the wrong order.")
-    _, after = remainder.split(END, 1)
-    return before + START + "\n" + block + "\n" + END + after
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--readme", type=Path, default=Path("README.md"))
-    parser.add_argument("--username", default="amintorabi88")
-    args = parser.parse_args()
-    token = os.environ.get("PROFILE_STATS_TOKEN", "").strip()
-    if not token:
-        raise RuntimeError("Add the PROFILE_STATS_TOKEN Actions repository secret first.")
-    original = args.readme.read_text(encoding="utf-8")
-    replace_stats(original, "")  # Validate markers before contacting GitHub.
-    now = datetime.now(timezone.utc).replace(microsecond=0)
-    stats = fetch_stats(token, args.username, now)
-    updated = replace_stats(original, stats_html(stats, now))
-    if updated == original:
-        print("Contribution statistics are unchanged.")
-        return
-    temporary = args.readme.with_name(args.readme.name + ".tmp")
-    temporary.write_text(updated, encoding="utf-8")
-    temporary.replace(args.readme)
-    print("Updated aggregate contribution statistics. No repository details collected.")
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as error:
-        # Known errors have safe messages. Suppress raw unexpected API payloads.
-        if isinstance(error, (RuntimeError, ValueError, OSError)):
-            print(str(error), file=sys.stderr)
-        else:
-            print("The update failed; existing statistics were preserved.", file=sys.stderr)
-        sys.exit(1)
+    main()

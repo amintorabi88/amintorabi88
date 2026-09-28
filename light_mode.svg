@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" font-family="Consolas, Menlo, Monaco, monospace" font-size="13px">
+<rect x="0.5" y="0.5" width="999" height="559" rx="12" fill="#ffffff" stroke="#d0d7de"/>
+<text x="30" y="45" fill="#57606a" xml:space="preserve">               ╭────────────────────╮</text>
+<text x="30" y="61" fill="#57606a" xml:space="preserve">               │   MACHINE LEARNING │</text>
+<text x="30" y="77" fill="#57606a" xml:space="preserve">               ╰─────────┬──────────╯</text>
+<text x="30" y="93" fill="#57606a" xml:space="preserve">                         │</text>
+<text x="30" y="109" fill="#57606a" xml:space="preserve">                  ┌──────▼──────┐</text>
+<text x="30" y="125" fill="#57606a" xml:space="preserve">                  │    DATA     │</text>
+<text x="30" y="141" fill="#57606a" xml:space="preserve">                  │   SCIENCE   │</text>
+<text x="30" y="157" fill="#57606a" xml:space="preserve">                  └──────┬──────┘</text>
+<text x="30" y="173" fill="#57606a" xml:space="preserve">                         │</text>
+<text x="30" y="189" fill="#57606a" xml:space="preserve">              ┌──────────▼──────────┐</text>
+<text x="30" y="205" fill="#57606a" xml:space="preserve">              │                     │</text>
+<text x="30" y="221" fill="#57606a" xml:space="preserve">              │      ◉       ◉      │</text>
+<text x="30" y="237" fill="#57606a" xml:space="preserve">              │                     │</text>
+<text x="30" y="253" fill="#57606a" xml:space="preserve">              │      NEURAL         │</text>
+<text x="30" y="269" fill="#57606a" xml:space="preserve">              │      NETWORK        │</text>
+<text x="30" y="285" fill="#57606a" xml:space="preserve">              │                     │</text>
+<text x="30" y="301" fill="#57606a" xml:space="preserve">              │    ◉ ── ◉ ── ◉     │</text>
+<text x="30" y="317" fill="#57606a" xml:space="preserve">              │     ╲   │   ╱       │</text>
+<text x="30" y="333" fill="#57606a" xml:space="preserve">              │      ╲  │  ╱        │</text>
+<text x="30" y="349" fill="#57606a" xml:space="preserve">              │       ╲ │ ╱         │</text>
+<text x="30" y="365" fill="#57606a" xml:space="preserve">              │        ◉            │</text>
+<text x="30" y="381" fill="#57606a" xml:space="preserve">              │                     │</text>
+<text x="30" y="397" fill="#57606a" xml:space="preserve">              └──────────┬──────────┘</text>
+<text x="30" y="413" fill="#57606a" xml:space="preserve">                         │</text>
+<text x="30" y="429" fill="#57606a" xml:space="preserve">                  ┌──────▼──────┐</text>
+<text x="30" y="445" fill="#57606a" xml:space="preserve">                  │ PREDICTION  │</text>
+<text x="30" y="461" fill="#57606a" xml:space="preserve">                  └─────────────┘</text>
+<text x="30" y="477" fill="#57606a" xml:space="preserve"></text>
+<text x="30" y="493" fill="#57606a" xml:space="preserve">                    AMIN TORABI</text>
+<text x="30" y="509" fill="#57606a" xml:space="preserve">                 ML / DATA SCIENCE</text>
+<text x="440" y="43" xml:space="preserve"><tspan fill="#0969da">amintorabi88@github </tspan><tspan fill="#afb8c1">──────────────────────────────────────</tspan></text>
+<text x="440" y="85" xml:space="preserve"><tspan fill="#953800">OS: </tspan><tspan fill="#afb8c1">................................................ </tspan><tspan fill="#24292f">macOS</tspan></text>
+<text x="440" y="106" xml:space="preserve"><tspan fill="#953800">Location: </tspan><tspan fill="#afb8c1">............................... </tspan><tspan fill="#24292f">Philadelphia, PA</tspan></text>
+<text x="440" y="127" xml:space="preserve"><tspan fill="#953800">Host: </tspan><tspan fill="#afb8c1">.................................... </tspan><tspan fill="#24292f">FMC Corporation</tspan></text>
+<text x="440" y="148" xml:space="preserve"><tspan fill="#953800">Kernel: </tspan><tspan fill="#afb8c1">..................... </tspan><tspan fill="#24292f">Data Scientist / ML Engineer</tspan></text>
+<text x="440" y="169" xml:space="preserve"><tspan fill="#953800">IDE: </tspan><tspan fill="#afb8c1">........................ </tspan><tspan fill="#24292f">PyCharm, VS Code, Databricks</tspan></text>
+<text x="440" y="211" xml:space="preserve"><tspan fill="#0969da">─ Stack </tspan><tspan fill="#afb8c1">──────────────────────────────────────────────────</tspan></text>
+<text x="440" y="232" xml:space="preserve"><tspan fill="#953800">Languages: </tspan><tspan fill="#afb8c1">................................... </tspan><tspan fill="#24292f">Python, SQL</tspan></text>
+<text x="440" y="253" xml:space="preserve"><tspan fill="#953800">ML.CV: </tspan><tspan fill="#afb8c1">............................ </tspan><tspan fill="#24292f">PyTorch, YOLO, RF-DETR</tspan></text>
+<text x="440" y="274" xml:space="preserve"><tspan fill="#953800">MLOps: </tspan><tspan fill="#afb8c1">............................. </tspan><tspan fill="#24292f">MLflow, Model Serving</tspan></text>
+<text x="440" y="295" xml:space="preserve"><tspan fill="#953800">Data: </tspan><tspan fill="#afb8c1">...................... </tspan><tspan fill="#24292f">Spark, Delta Lake, PostgreSQL</tspan></text>
+<text x="440" y="316" xml:space="preserve"><tspan fill="#953800">Cloud: </tspan><tspan fill="#afb8c1">................................. </tspan><tspan fill="#24292f">Azure, Databricks</tspan></text>
+<text x="440" y="358" xml:space="preserve"><tspan fill="#0969da">─ Focus </tspan><tspan fill="#afb8c1">──────────────────────────────────────────────────</tspan></text>
+<text x="440" y="379" xml:space="preserve"><tspan fill="#953800">Computer Vision: </tspan><tspan fill="#afb8c1">........................ </tspan><tspan fill="#24292f">Object Detection</tspan></text>
+<text x="440" y="400" xml:space="preserve"><tspan fill="#953800">Machine Learning: </tspan><tspan fill="#afb8c1">.................. </tspan><tspan fill="#24292f">Training + Deployment</tspan></text>
+<text x="440" y="421" xml:space="preserve"><tspan fill="#953800">Current Interest: </tspan><tspan fill="#afb8c1">...................... </tspan><tspan fill="#24292f">AI / ML Platforms</tspan></text>
+<text x="440" y="463" xml:space="preserve"><tspan fill="#0969da">─ GitHub Stats </tspan><tspan fill="#afb8c1">───────────────────────────────────────────</tspan></text>
+<text x="440" y="484" xml:space="preserve"><tspan fill="#953800">Repos: </tspan><tspan fill="#afb8c1">.. </tspan><tspan fill="#24292f">18 {Contributed: N/A}</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#953800">Stars: </tspan><tspan fill="#afb8c1">............... </tspan><tspan fill="#24292f">0</tspan></text>
+<text x="440" y="505" xml:space="preserve"><tspan fill="#953800">Commits: </tspan><tspan fill="#afb8c1">.................. </tspan><tspan fill="#24292f">N/A</tspan><tspan fill="#afb8c1"> | </tspan><tspan fill="#953800">Followers: </tspan><tspan fill="#afb8c1">........... </tspan><tspan fill="#24292f">0</tspan></text>
+<text x="440" y="526" xml:space="preserve"><tspan fill="#953800">Net lines changed: </tspan><tspan fill="#24292f">N/A</tspan><tspan fill="#afb8c1"> ( </tspan><tspan fill="#1a7f37">N/A++</tspan><tspan fill="#afb8c1">, </tspan><tspan fill="#cf222e">N/A--</tspan><tspan fill="#afb8c1"> )</tspan></text>
+</svg>
