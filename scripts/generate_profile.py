@@ -12,6 +12,7 @@ import html
 import json
 import os
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -23,49 +24,6 @@ JOINED_YEAR = 2022
 
 # Width of the information column, measured in monospace characters.
 W = 58
-
-
-# ---------------------------------------------------------------------------
-# ASCII ART
-# ---------------------------------------------------------------------------
-#
-# For now this is a clean ML / terminal-style graphic.
-#
-# Later we can replace this with an ASCII version of your portrait if you want.
-#
-
-ART = r"""
-               ╭────────────────────╮
-               │   MACHINE LEARNING │
-               ╰─────────┬──────────╯
-                         │
-                  ┌──────▼──────┐
-                  │    DATA     │
-                  │   SCIENCE   │
-                  └──────┬──────┘
-                         │
-              ┌──────────▼──────────┐
-              │                     │
-              │      ◉       ◉      │
-              │                     │
-              │      NEURAL         │
-              │      NETWORK        │
-              │                     │
-              │    ◉ ── ◉ ── ◉     │
-              │     ╲   │   ╱       │
-              │      ╲  │  ╱        │
-              │       ╲ │ ╱         │
-              │        ◉            │
-              │                     │
-              └──────────┬──────────┘
-                         │
-                  ┌──────▼──────┐
-                  │ PREDICTION  │
-                  └─────────────┘
-
-                    AMIN TORABI
-                 ML / DATA SCIENCE
-"""
 
 
 # ---------------------------------------------------------------------------
@@ -648,23 +606,18 @@ def render(mode, stats):
         ),
     ]
 
-    # Left-side art.
-    for index, line in enumerate(
-        ART.strip("\n").split("\n")
-    ):
-        y = 45 + index * 16
-
-        output.append(
-            (
-                '<text '
-                'x="30" '
-                f'y="{y}" '
-                f'fill="{palette["art"]}" '
-                'xml:space="preserve">'
-                f"{html.escape(line)}"
-                "</text>"
-            )
-        )
+    # Embed the existing ASCII portrait so GitHub needs no external image fetch.
+    portrait_path = Path(__file__).resolve().parents[1] / f"portrait-{mode}.svg"
+    ET.register_namespace("", "http://www.w3.org/2000/svg")
+    portrait = ET.parse(portrait_path).getroot()
+    portrait.set("x", "30")
+    portrait.set("y", "20")
+    portrait.set("width", "380")
+    portrait.set("height", "520")
+    # The card supplies the background; preserve the theme-specific ASCII text.
+    for background in portrait.findall("{http://www.w3.org/2000/svg}rect"):
+        portrait.remove(background)
+    output.append(ET.tostring(portrait, encoding="unicode"))
 
     # Right-side information.
     for index, segments in enumerate(
