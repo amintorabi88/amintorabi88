@@ -122,7 +122,7 @@ def fetch_public_stats():
     return {
         "repos": user["public_repos"], "followers": user["followers"],
         "stars": sum(repo["stargazers_count"] for repo in repos),
-        "contributed": None, "commits": None,
+        "contributed": None, "commits": None, "contributions_year": None,
         "loc": None, "loc_add": None, "loc_del": None,
     }
 
@@ -139,8 +139,7 @@ def fetch_stats():
             f'to: "{year}-12-31T23:59:59Z") '
             "{ "
             "totalCommitContributions "
-            "restrictedContributionsCount "
-            "}"
+                        "}"
         )
         for year in range(JOINED_YEAR, current_year + 1)
     )
@@ -165,6 +164,9 @@ def fetch_stats():
         query {{
             user(login: "{USER}") {{
                 id
+                contributionsCollection {{
+                    contributionCalendar {{ totalContributions }}
+                }}
 
                 followers {{
                     totalCount
@@ -210,6 +212,9 @@ def fetch_stats():
             for repo in repos
         ),
         "commits": commits,
+        # Calendar total already accounts for activity visible to this token.
+        # Do not add restrictedContributionsCount again (double counting).
+        "contributions_year": user["contributionsCollection"]["contributionCalendar"]["totalContributions"],
     }
 
     owned_non_fork_repos = [
@@ -526,16 +531,17 @@ def info_lines(stats):
 
         rule("GitHub Stats"),
 
+        kv("Contributions (last year)", n(stats["contributions_year"])),
+
         kv2(
             "Repos",
-            f"{n(stats['repos'])} "
-            f"{{Contributed: {n(stats['contributed'])}}}",
+            n(stats["repos"]),
             "Stars",
             n(stats["stars"]),
         ),
 
         kv2(
-            "Commits",
+            "Commits (all time)",
             n(stats["commits"]),
             "Followers",
             n(stats["followers"]),
@@ -588,8 +594,8 @@ def render(mode, stats):
         (
             '<svg xmlns="http://www.w3.org/2000/svg" '
             'width="1000" '
-            'height="560" '
-            'viewBox="0 0 1000 560" '
+            'height="590" '
+            'viewBox="0 0 1000 590" '
             'font-family="Consolas, Menlo, Monaco, monospace" '
             'font-size="13px">'
         ),
@@ -598,7 +604,7 @@ def render(mode, stats):
             'x="0.5" '
             'y="0.5" '
             'width="999" '
-            'height="559" '
+            'height="589" '
             'rx="12" '
             f'fill="{palette["bg"]}" '
             f'stroke="{palette["border"]}"'
